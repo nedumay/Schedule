@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Schedule</string>
+    <string name="num_week">Номер недели</string>
+    <string name="schedule">Расписание</string>
+    <string name="next">Далее</string>
+    <string name="back">Назад</string>
+</resources>
