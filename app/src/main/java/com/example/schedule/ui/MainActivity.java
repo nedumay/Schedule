@@ -112,14 +112,15 @@ public class MainActivity extends AppCompatActivity {
             String url = "https://web.archive.org/web/20200811123003/https://ictis.sfedu.ru/rasp/HTML/82.htm";// Адрес сайта с расписанием
             Document document = null;
             try {
-                document = Jsoup.connect(url).get();// Коннектимся и получаем страницу
-                answer = document.body().html();// Получаем код из тега body страницы
+                // Получение данных
+                document = Jsoup.connect(url).get();
+                answer = document.body().html();
             } catch (IOException e) {
                 // Если произошла ошибка, значит вероятнее всего, отсутствует соединение с интернетом
                 // Загружаем в переменную answer офлайн версию из txt файла
                 try {
                     BufferedReader read = new BufferedReader(new InputStreamReader(openFileInput("timetable.txt")));
-                    String str = "";
+                    String str = " ";
                     while ((str = read.readLine()) != null) {
                         answer += str;
                     }
@@ -127,19 +128,18 @@ public class MainActivity extends AppCompatActivity {
                     offline = true;//работаем в оффлайн режиме
                 } catch (FileNotFoundException ex) {
                     //Если файла с сохранённым расписанием нет, то записываем в answer пустоту
-                    answer = "";
+                    answer = " ";
                     ex.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
-            //Убираю лишний текст из html
-            //Заменяю html код отсутствия пары на запись nolessone
-            //Убираю двойные пробелы
+            //Очистка лишнего текста из html
             answer = answer.replace("Пары", "")
                     .replace("Время", "")
                     .replace("<br>", "br")
                     .replace("<font face=\"Arial\" size=\"1\"></font><p align=\"CENTER\"><font face=\"Arial\" size=\"1\"></font>", "nolessone")
+                    .replace("<!-- <TD WIDTH=\"11%\" VALIGN=\"TOP\" HEIGHT=28> _ --!>", "")
                     .replace("  ", "");
             return Jsoup.parse(answer).text();//Вытаскиваем текст из кода в переменной answer и передаём в UI-поток
         }
@@ -147,12 +147,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            /*Этот метод выполняется при завершении фонового кода
-            Сюда возвращаются данные из потока
-             */
-            request = "";//Начинаем формировать ответ
-            String temp = result.toString();//Делаём временную строку
-            // Записываем содержимое, в файл timetable.txt, в котором будем хранить оффлайн версию расписания
+            /*Возвращение данных из потока*/
+            request = "";
+            String temp = result.toString();
+            // Запись содержимого в файл timetable.txt, в котором хранится оффлайн версия расписания.
             try {
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(openFileOutput("timetable.txt", MODE_PRIVATE)));
                 writer.write(temp);
@@ -174,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
             // Добавляем к дням недели приставку newday, для дальнейшей разбивки строки
             request = request.replace("Пнд", "newdayПнд").replace("Втр", "newdayВтр")
                     .replace("Срд", "newdayСрд").replace("Чтв", "newdayЧтв")
-                    .replace("Птн", "newdayПтн").replace("Сбт", "newdayСбт");
+                    .replace("Птн", "newdayПтн").replace("Сбт", "newdayСбт")
+                    .replace("Вск", "newdayВск");
             /*Получаем дату дня
             Если count = 0, то вернётся дата сегодняшнего дня
             Если count = -1, то вчерашнего

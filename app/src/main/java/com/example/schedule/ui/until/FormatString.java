@@ -46,41 +46,41 @@ public class FormatString {
                                 if(ScienceInformation.length > 1)
                                     ticher = ScienceInformation[1];
                                 DayTimetable += i + "-ая: Предмет - " + science+"\n"+ticher+"\n\n";
-                                ticher = ticher.replace("А-","@А-").replace("А-","@Б-")
+                                ticher = ticher.replace("А-","@А-").replace("Б-","@Б-")
                                         .replace("В-","@В-").replace("Г-","@Г-")
                                         .replace("Д-","@Д-").replace("Е-","@Е-")
                                         .replace("И-","@И-").replace("K-","@K-");
                                 String Auditory;
                                 if(ticher.split("@").length == 2){
-                                    Auditory = "Аудитория: "+ticher.split("@")[1];
+                                    Auditory = "\nАудитория: "+ticher.split("@")[1];
                                 }else
-                                    Auditory = "Аудитория: Дома";//На случай если пары нет
+                                    Auditory = "\n";//На случай если пары нет
                                 ticher = ticher.split("@")[0];
                                 if(ticher.length() >0){
-                                    ticher = "Преподаватель: "+ticher;
+                                    ticher = "\nПреподаватель: " + ticher;
                                 }else{
-                                    ticher = "Самоподготовка";
+                                    ticher = "\nСамоподготовка ";
                                 }
                                 if(i==1){
-                                    less[i-1] = "1-ая (8:00-9:35) "+science;
+                                    less[i-1] = "\n1-ая (8:00-9:30)\n"+science;
                                 }
                                 if(i==2){
-                                    less[i-1] = "2-ая (9:50-11:25) "+science;
+                                    less[i-1] = "\n2-ая (9:40-11:10)\n"+science;
                                 }
                                 if(i==3){
-                                    less[i-1] = "3-ая (11:55-13:30) "+science;
+                                    less[i-1] = "\n3-ая (11:20-12:50)\n"+science;
                                 }
                                 if(i==4){
-                                    less[i-1] = "4-ая (13:45-15:20) "+science;
+                                    less[i-1] = "\n4-ая (13:20-14:50)\n"+science;
                                 }
                                 if(i==5){
-                                    less[i-1] = "5-ая (15:50-17:25) "+science;
+                                    less[i-1] = "\n5-ая (15:00-16:30)\n"+science;
                                 }
                                 if(i==6){
-                                    less[i-1] = "6-ая (17:40-19:15) "+science;
+                                    less[i-1] = "\n6-ая (16:50-18:20)\n"+science;
                                 }
                                 if(i==7){
-                                    less[i-1] = "7-ая (19:30-21:05) "+science;
+                                    less[i-1] = "\n7-ая (18:30-20:00)\n"+science;
                                 }
                                 tich[i-1] = ticher;
                                 aud[i-1] = Auditory;
@@ -97,6 +97,6 @@ public class FormatString {
         for(int i = 0; i <=6; i++){
             timetable.setText(timetable.getText()+"\n"+less[i]+tich[i]+aud[i]);//Вывод пары, препода и аудитории каждой пары (от нулевой до шестой)
         }
-        weeknumber.setText("Сейчас "+ WeekNumber + " неделя");//Выводим номер неддели
+        weeknumber.setText(WeekNumber + " неделя ");//Выводим номер неддели
     }
 }
